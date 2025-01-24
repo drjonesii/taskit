@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Task List{% endblock %}
+
+{% block content %}
+<h2>Your Tasks</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Vote</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Due Date</th>
+            <th>Priority</th>
+            <th>Completed</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+            <tr>
+                <td>
+                    <form action="{% url 'vote_task' task.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit">Vote</button>
+                    </form>
+                    <br>
+                    {{ task.votes }}
+                </td>
+                <td>{{ task.title }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.due_date }}</td>
+                <td>{{ task.priority }}</td>
+                <td>{{ task.completed }}</td>
+                <td>
+                    <form action="{% url 'task_edit' task.id %}" method="get" style="display:inline;">
+                        <button type="submit">Edit</button>
+                    </form>
+                    <form action="{% url 'task_delete' task.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'home' %}">Back to Home</a>
+{% endblock %}

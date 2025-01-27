@@ -1,3 +1,33 @@
+from django.test import TestCase
+from django.contrib.auth.models import User
+from tasks.models import Task, Category
+from django.urls import reverse
+
+class TaskModelTest(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpass')
+        self.category = Category.objects.create(name='Test Category')
+        self.task = Task.objects.create(
+            user=self.user,
+            title='Test Task',
+            description='Test Description',
+            category=self.category,
+            due_date='2025-01-01T00:00:00Z',
+            priority='High',
+            completed=False,
+            votes=0
+        )
+
+    def test_task_creation(self):
+        self.assertEqual(self.task.title, 'Test Task')
+        self.assertEqual(self.task.description, 'Test Description')
+        self.assertEqual(self.task.category.name, 'Test Category')
+        self.assertEqual(str(self.task.due_date), '2025-01-01 00:00:00+00:00')
+        self.assertEqual(self.task.priority, 'High')
+        self.assertFalse(self.task.completed)
+        self.assertEqual(self.task.votes, 0)
+
 class TaskViewTest(TestCase):
 
     def setUp(self):

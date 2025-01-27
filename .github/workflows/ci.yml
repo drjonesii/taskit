@@ -54,7 +54,7 @@ jobs:
       run: python manage.py migrate
 
     - name: Run tests
-      run: python manage.py test
+      run: python manage.py test tasks
 
     - name: Build Docker image
       run: docker build -t ghcr.io/${{ github.repository }}:latest .

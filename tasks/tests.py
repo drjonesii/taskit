@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from tasks.models import Task, Category
 from django.urls import reverse
+from django.utils.dateparse import parse_datetime
 
 class TaskModelTest(TestCase):
 
@@ -23,7 +24,7 @@ class TaskModelTest(TestCase):
         self.assertEqual(self.task.title, 'Test Task')
         self.assertEqual(self.task.description, 'Test Description')
         self.assertEqual(self.task.category.name, 'Test Category')
-        self.assertEqual(str(self.task.due_date), '2025-01-01 00:00:00+00:00')
+        self.assertEqual(self.task.due_date, parse_datetime('2025-01-01T00:00:00Z'))
         self.assertEqual(self.task.priority, 'High')
         self.assertFalse(self.task.completed)
         self.assertEqual(self.task.votes, 0)
